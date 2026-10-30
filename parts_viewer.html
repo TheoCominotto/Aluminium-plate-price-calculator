@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plate Parts Viewer</title>
+  <title>Aluminium Parts Viewer</title>
   <style>
     :root {
       color-scheme: dark;
@@ -241,9 +241,22 @@
     .total-price { color: #a5f0ca; font-size: 24px; font-weight: 750; white-space: nowrap; }
     .bar-parts { min-width: 240px; color: #d2dfe4; white-space: normal !important; }
     tfoot td { border-top: 1px solid #46565f; font-weight: 700; }
+    .beam-results { margin-top: 28px; }
+    .beam-results[hidden] { display: none; }
+    .beam-results h3 { margin: 0 0 7px; font-size: 16px; }
+    .beam-description { margin: 0 0 14px; color: #a5b4bc; font-size: 13px; line-height: 1.5; }
+    .beam-rates { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .beam-rate { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 13px; border: 1px solid #34434c; border-radius: 7px; background: #1b272e; color: #b6c4ca; font-size: 12px; font-weight: 650; }
+    .beam-rate input { width: 90px; min-height: 34px; padding: 0 8px; border: 1px solid #46565f; border-radius: 6px; background: #111a20; color: #e0eaee; font: inherit; }
+    .beam-rate input:focus-visible { outline: 3px solid #69d6a9; outline-offset: 2px; }
+    .beam-total { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 16px; padding: 12px 15px; border: 1px solid #35594b; border-radius: 8px; background: #20372d; }
+    .beam-total-label { color: #b8c9c1; font-size: 13px; font-weight: 650; }
+    .beam-total-price { color: #a5f0ca; font-size: 20px; font-weight: 750; white-space: nowrap; }
+    .unpriced { color: #ffc087; }
 
     @media (max-width: 640px) {
       .total-summary { align-items: flex-start; flex-direction: column; }
+      .beam-total { align-items: flex-start; flex-direction: column; }
     }
   </style>
 </head>
@@ -255,8 +268,8 @@
 
   <main>
     <p class="eyebrow">Parts list</p>
-    <h1>Plate parts</h1>
-    <p class="intro">Open a dimensions report to see only the components with “ plate” in their name.</p>
+    <h1>Aluminium parts</h1>
+    <p class="intro">Open a dimensions report to see components with “plate” or “beam” in their name.</p>
 
     <section class="upload" id="drop-zone" aria-label="Open a parts list">
       <div class="upload-copy">
@@ -279,7 +292,7 @@
       </div>
       <div class="results-heading">
         <div>
-          <h2 id="results-title">Matching components</h2>
+          <h2 id="results-title">Plate components</h2>
           <p class="source" id="source-name">No file loaded</p>
         </div>
         <div class="results-controls">
@@ -333,6 +346,41 @@
           </tbody>
         </table>
       </div>
+      <section class="beam-results" id="beam-results" aria-labelledby="beam-results-title" hidden>
+        <h3 id="beam-results-title">Beam pricing</h3>
+        <p class="beam-description">The two smallest dimensions determine the beam section; the largest dimension is its length. Each beam is charged by length plus a fixed cutting cost. Unlisted sections are shown as unpriced and excluded from the total.</p>
+        <div class="beam-rates" aria-label="Beam prices per metre and cutting costs per beam">
+          <label class="beam-rate" for="beam-rate-80x160">80 × 160 mm · €/m<input id="beam-rate-80x160" type="number" min="0" step="any" value="155.48"></label>
+          <label class="beam-rate" for="beam-cut-cost-80x160">80 × 160 mm · cutting €/beam<input id="beam-cut-cost-80x160" type="number" min="0" step="any" value="10.95"></label>
+          <label class="beam-rate" for="beam-rate-80x80">80 × 80 mm · €/m<input id="beam-rate-80x80" type="number" min="0" step="any" value="69.49"></label>
+          <label class="beam-rate" for="beam-cut-cost-80x80">80 × 80 mm · cutting €/beam<input id="beam-cut-cost-80x80" type="number" min="0" step="any" value="4.45"></label>
+          <label class="beam-rate" for="beam-rate-40x40">40 × 40 mm · €/m<input id="beam-rate-40x40" type="number" min="0" step="any" value="24.6"></label>
+          <label class="beam-rate" for="beam-cut-cost-40x40">40 × 40 mm · cutting €/beam<input id="beam-cut-cost-40x40" type="number" min="0" step="any" value="2.05"></label>
+          <label class="beam-rate" for="beam-rate-40x80">40 × 80 mm · €/m<input id="beam-rate-40x80" type="number" min="0" step="any" value="47.85"></label>
+          <label class="beam-rate" for="beam-cut-cost-40x80">40 × 80 mm · cutting €/beam<input id="beam-cut-cost-40x80" type="number" min="0" step="any" value="3.08"></label>
+        </div>
+        <div class="beam-total" aria-live="polite">
+          <span class="beam-total-label">Total priced beam cost</span>
+          <strong class="beam-total-price" id="beam-total-price">—</strong>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Assembly</th>
+                <th scope="col">Component name</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Section (mm)</th>
+                <th scope="col">Length (mm)</th>
+                <th scope="col">Rate (€ / m)</th>
+                <th scope="col">Cutting (€ / beam)</th>
+                <th scope="col">Total price (€)</th>
+              </tr>
+            </thead>
+            <tbody id="beam-results-body"></tbody>
+          </table>
+        </div>
+      </section>
       <section class="bar-results" id="bar-results" aria-labelledby="bar-results-title" hidden>
         <h3 id="bar-results-title">Combined stock bars</h3>
         <p class="bar-description">Plates with the same height (thickness) are grouped by exact matching width or length. The lower-cost orientation is used for each thickness. Kerf is added between adjacent parts and backup length to each bar. Plates with no orientation under the maximum cutting width are priced individually and flagged over-limit.</p>
@@ -371,6 +419,21 @@
     const backupLengthControl = document.getElementById("backup-length-control");
     const barResults = document.getElementById("bar-results");
     const barResultsBody = document.getElementById("bar-results-body");
+    const beamResults = document.getElementById("beam-results");
+    const beamResultsBody = document.getElementById("beam-results-body");
+    const beamTotalPriceDisplay = document.getElementById("beam-total-price");
+    const beamRateInputs = new Map([
+      ["40x40", document.getElementById("beam-rate-40x40")],
+      ["40x80", document.getElementById("beam-rate-40x80")],
+      ["80x80", document.getElementById("beam-rate-80x80")],
+      ["80x160", document.getElementById("beam-rate-80x160")]
+    ]);
+    const beamCutCostInputs = new Map([
+      ["40x40", document.getElementById("beam-cut-cost-40x40")],
+      ["40x80", document.getElementById("beam-cut-cost-40x80")],
+      ["80x80", document.getElementById("beam-cut-cost-80x80")],
+      ["80x160", document.getElementById("beam-cut-cost-80x160")]
+    ]);
     const totalLabel = document.getElementById("total-label");
     const totalPriceDisplay = document.getElementById("total-price");
     const sourceName = document.getElementById("source-name");
@@ -402,15 +465,19 @@
       }
 
       function addIfPlate(name, size) {
-        if (name.toLocaleLowerCase().includes(" plate")) {
+        const lowerName = name.toLocaleLowerCase();
+        const isPlate = lowerName.includes("plate");
+        const isBeam = lowerName.includes("beam");
+        if (isPlate || isBeam) {
           const separator = name.lastIndexOf("/");
           const part = {
             assembly: separator < 0 ? "" : name.slice(0, separator),
             name: separator < 0 ? name : name.slice(separator + 1),
+            kind: isBeam ? "beam" : "plate",
             quantity: 1,
             ...size
           };
-          const key = JSON.stringify([part.assembly, part.name, part.length, part.width, part.height]);
+          const key = JSON.stringify([part.kind, part.assembly, part.name, part.length, part.width, part.height]);
           const existingPart = partsByKey.get(key);
           if (existingPart) {
             existingPart.quantity += 1;
@@ -444,6 +511,59 @@
       }, 0);
     }
 
+    function getBeamSection(part) {
+      const dimensions = [Number(part.length), Number(part.width), Number(part.height)].sort((a, b) => a - b);
+      return {
+        size: `${dimensions[0]}x${dimensions[1]}`,
+        section: `${dimensions[0]} × ${dimensions[1]}`,
+        length: dimensions[2]
+      };
+    }
+
+    function calculateBeamTotal(parts, rates, cutCosts) {
+      return parts.reduce((total, part) => {
+        const beam = getBeamSection(part);
+        const rate = rates[beam.size];
+        const cutCost = cutCosts[beam.size];
+        return rate === undefined || cutCost === undefined
+          ? total
+          : total + (rate * beam.length / 1000 + cutCost) * part.quantity;
+      }, 0);
+    }
+
+    function renderBeamParts(parts, rates, cutCosts) {
+      beamResultsBody.replaceChildren();
+      const fragment = document.createDocumentFragment();
+      for (const part of parts) {
+        const beam = getBeamSection(part);
+        const rate = rates === null ? undefined : rates[beam.size];
+        const cutCost = cutCosts === null ? undefined : cutCosts[beam.size];
+        const values = [
+          part.assembly,
+          part.name,
+          part.quantity,
+          beam.section,
+          beam.length,
+          rate === undefined ? "Unpriced" : formatPrice(rate),
+          cutCost === undefined ? "Unpriced" : formatPrice(cutCost),
+          rate === undefined || cutCost === undefined
+            ? "Unpriced"
+            : formatPrice((rate * beam.length / 1000 + cutCost) * part.quantity)
+        ];
+        const row = document.createElement("tr");
+        for (const [index, value] of values.entries()) {
+          const cell = document.createElement("td");
+          cell.textContent = value;
+          if (index === 0) cell.className = "assembly";
+          if (index === 1) cell.className = "name";
+          if (value === "Unpriced") cell.className = "unpriced";
+          row.append(cell);
+        }
+        fragment.append(row);
+      }
+      beamResultsBody.append(fragment);
+    }
+
     function renderParts(parts, settings) {
       resultsBody.replaceChildren();
       if (parts.length === 0) {
@@ -453,7 +573,7 @@
         cell.colSpan = 8;
         const title = document.createElement("strong");
         title.textContent = "No plate parts found";
-        cell.append(title, document.createTextNode('No component names in this file contain " plate".'));
+        cell.append(title, document.createTextNode('No component names in this file contain "plate".'));
         row.append(cell);
         resultsBody.append(row);
         return;
@@ -644,6 +764,22 @@
       const density = readNumber(densityInput, "Density");
       const priceRate = readNumber(priceRateInput, "Price per gram");
       const basePrice = readNumber(basePriceInput, "Base price");
+      const beamRates = {};
+      const beamCutCosts = {};
+      for (const [size, input] of beamRateInputs) {
+        const rate = readNumber(input, `Beam rate for ${size}`);
+        if (!Number.isFinite(rate) || rate < 0) {
+          throw new Error(`Beam rate for ${size} must be a non-negative number in €/m.`);
+        }
+        beamRates[size] = rate;
+      }
+      for (const [size, input] of beamCutCostInputs) {
+        const cutCost = readNumber(input, `Beam cutting cost for ${size}`);
+        if (!Number.isFinite(cutCost) || cutCost < 0) {
+          throw new Error(`Beam cutting cost for ${size} must be a non-negative number.`);
+        }
+        beamCutCosts[size] = cutCost;
+      }
       const kerf = combineBarsInput.checked ? readNumber(kerfInput, "Kerf") : 0;
       const maxWidth = combineBarsInput.checked ? readNumber(maxWidthInput, "Maximum cutting width") : 0;
       const backupLength = combineBarsInput.checked ? readNumber(backupLengthInput, "Backup length") : 0;
@@ -665,7 +801,7 @@
       if (!Number.isFinite(backupLength) || backupLength < 0) {
         throw new Error("Backup length must be a non-negative number in mm.");
       }
-      return { density, priceRate, basePrice, kerf, maxWidth, backupLength };
+      return { density, priceRate, basePrice, beamRates, beamCutCosts, kerf, maxWidth, backupLength };
     }
 
     function updateCalculations() {
@@ -673,22 +809,28 @@
       maxWidthControl.hidden = !combineBarsInput.checked;
       backupLengthControl.hidden = !combineBarsInput.checked;
       barResults.hidden = !combineBarsInput.checked;
+      const plateParts = currentParts.filter(part => part.kind === "plate");
+      const beamParts = currentParts.filter(part => part.kind === "beam");
+      beamResults.hidden = !hasLoadedFile || beamParts.length === 0;
       totalLabel.textContent = combineBarsInput.checked
-        ? "Combined purchase total"
-        : "Total price for all individual plates";
+        ? "Combined purchase total (bars + beams)"
+        : "Total price for plates + beams";
       try {
         const settings = getCalculationSettings();
         if (hasLoadedFile) {
-          renderParts(currentParts, settings);
+          renderParts(plateParts, settings);
+          renderBeamParts(beamParts, settings.beamRates, settings.beamCutCosts);
+          const beamTotal = calculateBeamTotal(beamParts, settings.beamRates, settings.beamCutCosts);
+          beamTotalPriceDisplay.textContent = formatPrice(beamTotal);
           if (combineBarsInput.checked) {
-            const bars = buildBarPlan(currentParts, settings);
+            const bars = buildBarPlan(plateParts, settings);
             renderBarPlan(bars, settings);
             totalLabel.textContent = bars.some(bar => bar.type === "individual")
-              ? "Final price for bars + over-limit plates"
-              : "Final price for all stock bars";
-            totalPriceDisplay.textContent = formatPrice(totalBarPrice(bars));
+              ? "Final price for bars + over-limit plates + beams"
+              : "Final price for all stock bars + beams";
+            totalPriceDisplay.textContent = formatPrice(totalBarPrice(bars) + beamTotal);
           } else {
-            totalPriceDisplay.textContent = formatPrice(calculateIndividualTotal(currentParts, settings));
+            totalPriceDisplay.textContent = formatPrice(calculateIndividualTotal(plateParts, settings) + beamTotal);
           }
         } else {
           totalPriceDisplay.textContent = "—";
@@ -696,11 +838,13 @@
         errorMessage.classList.remove("visible");
       } catch (error) {
         if (hasLoadedFile) {
-          renderParts(currentParts, null);
+          renderParts(plateParts, null);
+          renderBeamParts(beamParts, null, null);
           if (combineBarsInput.checked) {
             barResultsBody.replaceChildren();
           }
         }
+        beamTotalPriceDisplay.textContent = "—";
         totalPriceDisplay.textContent = "—";
         errorMessage.textContent = error.message;
         errorMessage.classList.add("visible");
@@ -732,6 +876,12 @@
     kerfInput.addEventListener("input", updateCalculations);
     maxWidthInput.addEventListener("input", updateCalculations);
     backupLengthInput.addEventListener("input", updateCalculations);
+    for (const input of beamRateInputs.values()) {
+      input.addEventListener("input", updateCalculations);
+    }
+    for (const input of beamCutCostInputs.values()) {
+      input.addEventListener("input", updateCalculations);
+    }
     dropZone.addEventListener("dragover", event => {
       event.preventDefault();
       dropZone.classList.add("dragging");
