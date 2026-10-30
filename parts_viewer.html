@@ -6,10 +6,10 @@
   <title>Plate Parts Viewer</title>
   <style>
     :root {
-      color-scheme: light;
+      color-scheme: dark;
       font-family: "Segoe UI", Arial, sans-serif;
-      color: #172d3a;
-      background: #f2f5f4;
+      color: #dce7ec;
+      background: #111a20;
       font-synthesis: none;
       text-rendering: optimizeLegibility;
     }
@@ -23,7 +23,7 @@
       display: flex;
       align-items: center;
       padding: 0 max(28px, calc((100% - 1120px) / 2));
-      background: #123242;
+      background: #0b1319;
       color: #f5faf8;
     }
 
@@ -33,9 +33,9 @@
       height: 32px;
       margin-right: 12px;
       place-items: center;
-      border: 1px solid #68c7a6;
+      border: 1px solid #42bd91;
       border-radius: 7px;
-      color: #8de0c0;
+      color: #72dfb5;
       font-size: 15px;
       font-weight: 700;
     }
@@ -46,16 +46,16 @@
 
     .eyebrow {
       margin: 0 0 9px;
-      color: #258568;
+      color: #69d6a9;
       font-size: 11px;
       font-weight: 750;
       letter-spacing: .14em;
       text-transform: uppercase;
     }
 
-    h1 { margin: 0; color: #142f3e; font-size: clamp(29px, 4vw, 38px); letter-spacing: -.035em; }
+    h1 { margin: 0; color: #e4edf1; font-size: clamp(29px, 4vw, 38px); letter-spacing: -.035em; }
 
-    .intro { margin: 10px 0 28px; color: #62727a; font-size: 15px; line-height: 1.6; }
+    .intro { margin: 10px 0 28px; color: #a5b4bc; font-size: 15px; line-height: 1.6; }
 
     .upload {
       display: flex;
@@ -64,10 +64,10 @@
       justify-content: space-between;
       gap: 20px;
       padding: 24px 28px;
-      border: 1px solid #d5e0dc;
+      border: 1px solid #34434c;
       border-radius: 10px;
-      background: #fff;
-      box-shadow: 0 2px 6px #18352d0a;
+      background: #1b272e;
+      box-shadow: 0 2px 8px #00000020;
     }
 
     .upload-copy { display: flex; align-items: center; gap: 16px; }
@@ -79,20 +79,20 @@
       flex: 0 0 auto;
       place-items: center;
       border-radius: 9px;
-      background: #e7f4ee;
-      color: #238263;
+      background: #203d35;
+      color: #72dfb5;
       font-size: 20px;
     }
 
     .upload-title { margin: 0 0 5px; font-size: 15px; font-weight: 650; }
-    .upload-hint { margin: 0; color: #718087; font-size: 13px; }
+    .upload-hint { margin: 0; color: #a0afb7; font-size: 13px; }
 
     .button {
       min-height: 42px;
       padding: 0 17px;
       border: 0;
       border-radius: 6px;
-      background: #208260;
+      background: #218c68;
       color: #fff;
       cursor: pointer;
       font: inherit;
@@ -101,20 +101,20 @@
       white-space: nowrap;
     }
 
-    .button:hover { background: #176e50; }
-    .button:focus-visible, .upload:focus-within { outline: 3px solid #90d9bd; outline-offset: 3px; }
+    .button:hover { background: #2aa47b; }
+    .button:focus-visible, .upload:focus-within { outline: 3px solid #69d6a9; outline-offset: 3px; }
     .file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 
-    .upload.dragging { border-color: #208260; background: #f3fbf7; }
+    .upload.dragging { border-color: #42bd91; background: #1b342c; }
 
     .message {
       display: none;
       margin-top: 16px;
       padding: 12px 15px;
-      border: 1px solid #efc8bf;
+      border: 1px solid #854a40;
       border-radius: 7px;
-      background: #fff5f2;
-      color: #8d3926;
+      background: #38231f;
+      color: #ffb6a7;
       font-size: 13px;
     }
 
@@ -132,44 +132,83 @@
 
     h2 { margin: 0; font-size: 19px; letter-spacing: -.015em; }
 
-    .source { margin: 6px 0 0; color: #74828a; font-size: 12px; }
+    .source { margin: 6px 0 0; color: #9eacb4; font-size: 12px; }
 
     .count {
       flex: 0 0 auto;
       padding: 7px 10px;
-      border: 1px solid #d5e6de;
+      border: 1px solid #35594b;
       border-radius: 20px;
-      background: #edf7f2;
-      color: #28775e;
+      background: #20372d;
+      color: #8fe0bc;
       font-size: 12px;
       font-weight: 650;
     }
 
+    .results-controls { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
+
+    .bar-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #b6c4ca;
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .bar-option input { accent-color: #42bd91; }
+
+    .density-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #b6c4ca;
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .density-control input {
+      width: 82px;
+      min-height: 34px;
+      padding: 0 8px;
+      border: 1px solid #46565f;
+      border-radius: 6px;
+      background: #111a20;
+      color: #e0eaee;
+      font: inherit;
+    }
+
+    .density-control input:focus-visible { outline: 3px solid #69d6a9; outline-offset: 2px; }
+    .density-control[hidden] { display: none; }
+    .over-limit td { color: #ffc087; }
+
     .table-wrap {
       overflow: auto;
-      border: 1px solid #dce4e1;
+      border: 1px solid #34434c;
       border-radius: 9px;
-      background: #fff;
-      box-shadow: 0 2px 6px #18352d08;
+      background: #1b272e;
+      box-shadow: 0 2px 8px #00000020;
     }
 
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    thead { background: #f7f9f8; }
-    th { padding: 13px 17px; color: #697981; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-    td { padding: 14px 17px; border-top: 1px solid #edf0ef; color: #31454f; font-size: 13px; }
+    thead { background: #202d35; }
+    th { padding: 13px 17px; color: #b1c0c7; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    td { padding: 14px 17px; border-top: 1px solid #2d3a42; color: #d2dfe4; font-size: 13px; }
     th:not(:last-child), td:not(:last-child) { white-space: nowrap; }
-    td.assembly { min-width: 250px; color: #718087; overflow-wrap: anywhere; white-space: normal; }
-    td.name { min-width: 220px; color: #1d3d4c; font-weight: 550; overflow-wrap: anywhere; white-space: normal; }
-    tbody tr:hover { background: #f8fbf9; }
+    td.assembly { min-width: 250px; color: #a5b4bc; overflow-wrap: anywhere; white-space: normal; }
+    td.name { min-width: 220px; color: #e1eaee; font-weight: 550; overflow-wrap: anywhere; white-space: normal; }
+    tbody tr:hover { background: #24333b; }
 
     .empty {
       padding: 44px 20px;
-      color: #7a898f;
+      color: #a5b4bc;
       text-align: center;
       font-size: 13px;
     }
 
-    .empty strong { display: block; margin-bottom: 7px; color: #344a54; font-size: 14px; }
+    .empty strong { display: block; margin-bottom: 7px; color: #d6e1e6; font-size: 14px; }
 
     @media (max-width: 640px) {
       .topbar { padding: 0 20px; }
@@ -177,9 +216,34 @@
       .upload { align-items: flex-start; flex-direction: column; padding: 20px; }
       .upload .button { width: 100%; }
       .results-heading { align-items: flex-start; flex-direction: column; }
+      .results-controls { width: 100%; justify-content: flex-start; }
       td.assembly { min-width: 190px; }
       td.name { min-width: 170px; }
       th, td { padding-right: 12px; padding-left: 12px; }
+    }
+
+    .bar-results { margin-top: 24px; }
+    .bar-results[hidden] { display: none; }
+    .bar-results h3 { margin: 0 0 7px; font-size: 16px; }
+    .bar-description { margin: 0 0 14px; color: #a5b4bc; font-size: 13px; line-height: 1.5; }
+    .total-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 22px;
+      padding: 14px 17px;
+      border: 1px solid #35594b;
+      border-radius: 8px;
+      background: #20372d;
+    }
+    .total-label { color: #b8c9c1; font-size: 14px; font-weight: 650; }
+    .total-price { color: #a5f0ca; font-size: 24px; font-weight: 750; white-space: nowrap; }
+    .bar-parts { min-width: 240px; color: #d2dfe4; white-space: normal !important; }
+    tfoot td { border-top: 1px solid #46565f; font-weight: 700; }
+
+    @media (max-width: 640px) {
+      .total-summary { align-items: flex-start; flex-direction: column; }
     }
   </style>
 </head>
@@ -203,18 +267,52 @@
         </div>
       </div>
       <label class="button" for="file-input">Choose .txt file</label>
-      <input class="file-input" id="file-input" type="file" accept=".txt,text/plain">
+      <input class="file-input" id="file-input" type="file" accept=".txt,text/plain" title="Choose a plain-text dimensions report to list its plate components.">
     </section>
 
     <div class="message" id="error-message" role="alert"></div>
 
     <section class="results" aria-labelledby="results-title">
+      <div class="total-summary" aria-live="polite">
+        <span class="total-label" id="total-label">Total price</span>
+        <strong class="total-price" id="total-price">—</strong>
+      </div>
       <div class="results-heading">
         <div>
           <h2 id="results-title">Matching components</h2>
           <p class="source" id="source-name">No file loaded</p>
         </div>
-        <span class="count" id="result-count" aria-live="polite">0 parts</span>
+        <div class="results-controls">
+          <label class="density-control" for="density-input">
+            Density (g/cm³)
+            <input id="density-input" type="number" min="0" step="any" value="2.7" title="Material density used to calculate each plate's mass. Aluminium defaults to 2.7 g/cm³.">
+          </label>
+          <label class="density-control" for="price-rate-input">
+            Price per gram (€)
+            <input id="price-rate-input" type="number" min="0" step="any" value="0.0155" title="Variable price coefficient multiplied by mass in grams.">
+          </label>
+          <label class="density-control" for="base-price-input">
+            Base price (€)
+            <input id="base-price-input" type="number" min="0" step="any" value="21.175" title="Fixed price added per individual plate, or once per stock bar in combined mode.">
+          </label>
+          <label class="bar-option" for="combine-bars-input">
+            <input id="combine-bars-input" type="checkbox" title="Plan compatible plates as stock bars, charging once per bar and showing individual pricing for plates that exceed the maximum cutting width.">
+            Combine compatible plates into bars
+          </label>
+          <label class="density-control" id="kerf-control" for="kerf-input" hidden>
+            Kerf (mm)
+            <input id="kerf-input" type="number" min="0" step="any" value="2" title="Saw material removed between adjacent cuts; added between plates in each stock bar.">
+          </label>
+          <label class="density-control" id="max-width-control" for="max-width-input" hidden>
+            Max cutting width (mm)
+            <input id="max-width-input" type="number" min="0" step="any" value="80" title="Maximum stock-bar strip width. Plates that cannot fit in either orientation are priced individually and flagged over-limit.">
+          </label>
+          <label class="density-control" id="backup-length-control" for="backup-length-input" hidden>
+            Backup length per bar (mm)
+            <input id="backup-length-input" type="number" min="0" step="any" value="50" title="Extra stock length added to every combined bar as a cutting allowance.">
+          </label>
+          <span class="count" id="result-count" aria-live="polite">0 parts</span>
+        </div>
       </div>
       <div class="table-wrap">
         <table>
@@ -222,16 +320,38 @@
             <tr>
               <th scope="col">Assembly</th>
               <th scope="col">Component name</th>
+              <th scope="col">Qty</th>
               <th scope="col">Length (mm)</th>
               <th scope="col">Width (mm)</th>
               <th scope="col">Height (mm)</th>
+              <th scope="col">Weight (g)</th>
+              <th scope="col">Unit price (€)</th>
             </tr>
           </thead>
           <tbody id="results-body">
-            <tr><td class="empty" colspan="5"><strong>Ready when you are</strong>Choose a text file to list its plate components.</td></tr>
+            <tr><td class="empty" colspan="8"><strong>Ready when you are</strong>Choose a text file to list its plate components.</td></tr>
           </tbody>
         </table>
       </div>
+      <section class="bar-results" id="bar-results" aria-labelledby="bar-results-title" hidden>
+        <h3 id="bar-results-title">Combined stock bars</h3>
+        <p class="bar-description">Plates with the same height (thickness) are grouped by exact matching width or length. The lower-cost orientation is used for each thickness. Kerf is added between adjacent parts and backup length to each bar. Plates with no orientation under the maximum cutting width are priced individually and flagged over-limit.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Stock bar</th>
+                <th scope="col">Parts</th>
+                <th scope="col">Stock length (mm)</th>
+                <th scope="col">Cuts</th>
+                <th scope="col">Stock weight (g)</th>
+                <th scope="col">Full price (€)</th>
+              </tr>
+            </thead>
+            <tbody id="bar-results-body"></tbody>
+          </table>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -239,12 +359,29 @@
     const fileInput = document.getElementById("file-input");
     const dropZone = document.getElementById("drop-zone");
     const resultsBody = document.getElementById("results-body");
+    const densityInput = document.getElementById("density-input");
+    const priceRateInput = document.getElementById("price-rate-input");
+    const basePriceInput = document.getElementById("base-price-input");
+    const combineBarsInput = document.getElementById("combine-bars-input");
+    const kerfInput = document.getElementById("kerf-input");
+    const kerfControl = document.getElementById("kerf-control");
+    const maxWidthInput = document.getElementById("max-width-input");
+    const maxWidthControl = document.getElementById("max-width-control");
+    const backupLengthInput = document.getElementById("backup-length-input");
+    const backupLengthControl = document.getElementById("backup-length-control");
+    const barResults = document.getElementById("bar-results");
+    const barResultsBody = document.getElementById("bar-results-body");
+    const totalLabel = document.getElementById("total-label");
+    const totalPriceDisplay = document.getElementById("total-price");
     const sourceName = document.getElementById("source-name");
     const resultCount = document.getElementById("result-count");
     const errorMessage = document.getElementById("error-message");
+    let currentParts = [];
+    let hasLoadedFile = false;
 
     function parseParts(text) {
       const parts = [];
+      const partsByKey = new Map();
       let dimensions = null;
       let foundDimensionRow = false;
       const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/);
@@ -267,11 +404,20 @@
       function addIfPlate(name, size) {
         if (name.toLocaleLowerCase().includes(" plate")) {
           const separator = name.lastIndexOf("/");
-          parts.push({
+          const part = {
             assembly: separator < 0 ? "" : name.slice(0, separator),
             name: separator < 0 ? name : name.slice(separator + 1),
+            quantity: 1,
             ...size
-          });
+          };
+          const key = JSON.stringify([part.assembly, part.name, part.length, part.width, part.height]);
+          const existingPart = partsByKey.get(key);
+          if (existingPart) {
+            existingPart.quantity += 1;
+          } else {
+            partsByKey.set(key, part);
+            parts.push(part);
+          }
         }
       }
 
@@ -281,13 +427,30 @@
       return parts;
     }
 
-    function renderParts(parts) {
+    function formatPrice(price) {
+      return price.toLocaleString("en-IE", {
+        style: "currency",
+        currency: "EUR",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function calculateIndividualTotal(parts, settings) {
+      return parts.reduce((total, part) => {
+        const mass = Number(part.length) * Number(part.width) * Number(part.height) / 1000 * settings.density;
+        const unitPrice = settings.priceRate * mass + settings.basePrice;
+        return total + unitPrice * part.quantity;
+      }, 0);
+    }
+
+    function renderParts(parts, settings) {
       resultsBody.replaceChildren();
       if (parts.length === 0) {
         const row = document.createElement("tr");
         const cell = document.createElement("td");
         cell.className = "empty";
-        cell.colSpan = 5;
+        cell.colSpan = 8;
         const title = document.createElement("strong");
         title.textContent = "No plate parts found";
         cell.append(title, document.createTextNode('No component names in this file contain " plate".'));
@@ -299,16 +462,249 @@
       const fragment = document.createDocumentFragment();
       for (const part of parts) {
         const row = document.createElement("tr");
-        for (const value of [part.assembly, part.name, part.length, part.width, part.height]) {
+        const values = [part.assembly, part.name, part.quantity, part.length, part.width, part.height];
+        for (const [index, value] of values.entries()) {
           const cell = document.createElement("td");
-          if (value === part.assembly) cell.className = "assembly";
-          if (value === part.name) cell.className = "name";
+          if (index === 0) cell.className = "assembly";
+          if (index === 1) cell.className = "name";
+          cell.textContent = value;
+          row.append(cell);
+        }
+        const mass = settings === null
+          ? null
+          : Number(part.length) * Number(part.width) * Number(part.height) / 1000 * settings.density;
+        const weightCell = document.createElement("td");
+        const priceCell = document.createElement("td");
+        if (settings !== null) {
+          weightCell.textContent = mass.toFixed(2);
+          priceCell.textContent = formatPrice(settings.priceRate * mass + settings.basePrice);
+        } else {
+          weightCell.textContent = "—";
+          priceCell.textContent = "—";
+        }
+        row.append(weightCell, priceCell);
+        fragment.append(row);
+      }
+      resultsBody.append(fragment);
+    }
+
+    function createBarLayout(parts, orientation, settings) {
+      const groups = new Map();
+      for (const part of parts) {
+        const thickness = Number(part.height);
+        const fixedDimension = orientation === "width" ? Number(part.width) : Number(part.length);
+        const cutLength = orientation === "width" ? Number(part.length) : Number(part.width);
+        const key = JSON.stringify([thickness, fixedDimension]);
+        if (!groups.has(key)) {
+          groups.set(key, { thickness, fixedDimension, parts: [] });
+        }
+        const group = groups.get(key);
+        group.parts.push({ part, cutLength });
+      }
+
+      const bars = [];
+      for (const group of groups.values()) {
+        if (group.fixedDimension > settings.maxWidth) {
+          for (const item of group.parts) {
+            const part = item.part;
+            const unitMass = Number(part.length) * Number(part.width) * Number(part.height) / 1000 * settings.density;
+            const label = [part.assembly, part.name].filter(Boolean).join(" / ");
+            bars.push({
+              type: "individual",
+              orientation,
+              fixedDimension: group.fixedDimension,
+              thickness: group.thickness,
+              stockLength: null,
+              cuts: null,
+              mass: unitMass * part.quantity,
+              price: (settings.priceRate * unitMass + settings.basePrice) * part.quantity,
+              quantity: part.quantity,
+              parts: `${label} × ${part.quantity}`
+            });
+          }
+          continue;
+        }
+
+        const quantity = group.parts.reduce((total, item) => total + item.part.quantity, 0);
+        const cuts = Math.max(0, quantity - 1);
+        const stockLength = group.parts.reduce(
+          (total, item) => total + item.cutLength * item.part.quantity,
+          0
+        ) + cuts * settings.kerf + settings.backupLength;
+        const mass = group.fixedDimension * group.thickness * stockLength / 1000 * settings.density;
+        const partCounts = new Map();
+        for (const item of group.parts) {
+          const label = [item.part.assembly, item.part.name].filter(Boolean).join(" / ");
+          partCounts.set(label, (partCounts.get(label) || 0) + item.part.quantity);
+        }
+        bars.push({
+          type: "bar",
+          orientation,
+          fixedDimension: group.fixedDimension,
+          thickness: group.thickness,
+          stockLength,
+          cuts,
+          mass,
+          price: settings.priceRate * mass + settings.basePrice,
+          quantity,
+          parts: [...partCounts.entries()].map(([name, count]) => `${name} × ${count}`).join(", ")
+        });
+      }
+      return bars;
+    }
+
+    function totalBarPrice(bars) {
+      return bars.reduce((total, bar) => total + bar.price, 0);
+    }
+
+    function buildBarPlan(parts, settings) {
+      const partsByThickness = new Map();
+      for (const part of parts) {
+        const thickness = Number(part.height);
+        if (!partsByThickness.has(thickness)) partsByThickness.set(thickness, []);
+        partsByThickness.get(thickness).push(part);
+      }
+
+      const bars = [];
+      for (const thicknessParts of partsByThickness.values()) {
+        const widthMatchedBars = createBarLayout(thicknessParts, "width", settings);
+        const lengthMatchedBars = createBarLayout(thicknessParts, "length", settings);
+        const selectedBars = totalBarPrice(lengthMatchedBars) < totalBarPrice(widthMatchedBars)
+          ? lengthMatchedBars
+          : widthMatchedBars;
+        bars.push(...selectedBars);
+      }
+      return bars;
+    }
+
+    function renderBarPlan(bars, settings) {
+      barResultsBody.replaceChildren();
+      const totalPrice = totalBarPrice(bars);
+
+      if (bars.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.className = "empty";
+        cell.colSpan = 6;
+        cell.textContent = "No plate parts to combine.";
+        row.append(cell);
+        barResultsBody.append(row);
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      for (const bar of bars) {
+        const row = document.createElement("tr");
+        if (bar.type === "individual") row.className = "over-limit";
+        const stockBar = bar.type === "individual"
+          ? `Over max width · ${bar.fixedDimension} mm > ${settings.maxWidth} mm`
+          : bar.orientation === "width"
+            ? `Width matched · ${bar.fixedDimension} × ${bar.thickness} mm`
+            : `Length matched · ${bar.fixedDimension} × ${bar.thickness} mm`;
+        const values = [
+          stockBar,
+          bar.parts,
+          bar.stockLength === null ? "Individual plate" : `${bar.stockLength.toFixed(2)} mm`,
+          bar.cuts === null ? "—" : bar.cuts,
+          bar.mass.toFixed(2),
+          formatPrice(bar.price)
+        ];
+        for (const [index, value] of values.entries()) {
+          const cell = document.createElement("td");
+          if (index === 1) cell.className = "bar-parts";
           cell.textContent = value;
           row.append(cell);
         }
         fragment.append(row);
       }
-      resultsBody.append(fragment);
+
+      const totalRow = document.createElement("tr");
+      const totalLabel = document.createElement("td");
+      totalLabel.colSpan = 5;
+      totalLabel.textContent = bars.some(bar => bar.type === "individual")
+        ? "Final combined price, including over-limit individual plates"
+        : "Final price for all stock bars";
+      const totalCell = document.createElement("td");
+      totalCell.textContent = formatPrice(totalPrice);
+      totalRow.append(totalLabel, totalCell);
+      fragment.append(totalRow);
+      barResultsBody.append(fragment);
+    }
+
+    function readNumber(input, label) {
+      const value = input.value.trim();
+      const number = Number(value);
+      if (value === "" || !Number.isFinite(number)) {
+        throw new Error(`${label} must be a valid number.`);
+      }
+      return number;
+    }
+
+    function getCalculationSettings() {
+      const density = readNumber(densityInput, "Density");
+      const priceRate = readNumber(priceRateInput, "Price per gram");
+      const basePrice = readNumber(basePriceInput, "Base price");
+      const kerf = combineBarsInput.checked ? readNumber(kerfInput, "Kerf") : 0;
+      const maxWidth = combineBarsInput.checked ? readNumber(maxWidthInput, "Maximum cutting width") : 0;
+      const backupLength = combineBarsInput.checked ? readNumber(backupLengthInput, "Backup length") : 0;
+      if (!Number.isFinite(density) || density <= 0) {
+        throw new Error("Density must be a positive number in g/cm³.");
+      }
+      if (!Number.isFinite(priceRate) || priceRate < 0) {
+        throw new Error("Price per gram must be a non-negative number.");
+      }
+      if (!Number.isFinite(basePrice) || basePrice < 0) {
+        throw new Error("Base price must be a non-negative number.");
+      }
+      if (!Number.isFinite(kerf) || kerf < 0) {
+        throw new Error("Kerf must be a non-negative number in mm.");
+      }
+      if (combineBarsInput.checked && (!Number.isFinite(maxWidth) || maxWidth <= 0)) {
+        throw new Error("Maximum cutting width must be a positive number in mm.");
+      }
+      if (!Number.isFinite(backupLength) || backupLength < 0) {
+        throw new Error("Backup length must be a non-negative number in mm.");
+      }
+      return { density, priceRate, basePrice, kerf, maxWidth, backupLength };
+    }
+
+    function updateCalculations() {
+      kerfControl.hidden = !combineBarsInput.checked;
+      maxWidthControl.hidden = !combineBarsInput.checked;
+      backupLengthControl.hidden = !combineBarsInput.checked;
+      barResults.hidden = !combineBarsInput.checked;
+      totalLabel.textContent = combineBarsInput.checked
+        ? "Combined purchase total"
+        : "Total price for all individual plates";
+      try {
+        const settings = getCalculationSettings();
+        if (hasLoadedFile) {
+          renderParts(currentParts, settings);
+          if (combineBarsInput.checked) {
+            const bars = buildBarPlan(currentParts, settings);
+            renderBarPlan(bars, settings);
+            totalLabel.textContent = bars.some(bar => bar.type === "individual")
+              ? "Final price for bars + over-limit plates"
+              : "Final price for all stock bars";
+            totalPriceDisplay.textContent = formatPrice(totalBarPrice(bars));
+          } else {
+            totalPriceDisplay.textContent = formatPrice(calculateIndividualTotal(currentParts, settings));
+          }
+        } else {
+          totalPriceDisplay.textContent = "—";
+        }
+        errorMessage.classList.remove("visible");
+      } catch (error) {
+        if (hasLoadedFile) {
+          renderParts(currentParts, null);
+          if (combineBarsInput.checked) {
+            barResultsBody.replaceChildren();
+          }
+        }
+        totalPriceDisplay.textContent = "—";
+        errorMessage.textContent = error.message;
+        errorMessage.classList.add("visible");
+      }
     }
 
     async function loadFile(file) {
@@ -316,10 +712,12 @@
       errorMessage.classList.remove("visible");
       try {
         const text = await file.text();
-        const parts = parseParts(text);
-        renderParts(parts);
+        currentParts = parseParts(text);
+        hasLoadedFile = true;
         sourceName.textContent = file.name;
-        resultCount.textContent = `${parts.length} ${parts.length === 1 ? "part" : "parts"}`;
+        const totalQuantity = currentParts.reduce((total, part) => total + part.quantity, 0);
+        resultCount.textContent = `${totalQuantity} ${totalQuantity === 1 ? "part" : "parts"}`;
+        updateCalculations();
       } catch (error) {
         errorMessage.textContent = error.message;
         errorMessage.classList.add("visible");
@@ -327,6 +725,13 @@
     }
 
     fileInput.addEventListener("change", () => loadFile(fileInput.files[0]));
+    densityInput.addEventListener("input", updateCalculations);
+    priceRateInput.addEventListener("input", updateCalculations);
+    basePriceInput.addEventListener("input", updateCalculations);
+    combineBarsInput.addEventListener("change", updateCalculations);
+    kerfInput.addEventListener("input", updateCalculations);
+    maxWidthInput.addEventListener("input", updateCalculations);
+    backupLengthInput.addEventListener("input", updateCalculations);
     dropZone.addEventListener("dragover", event => {
       event.preventDefault();
       dropZone.classList.add("dragging");
