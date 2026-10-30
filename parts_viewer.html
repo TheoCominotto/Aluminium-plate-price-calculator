@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plate Parts Viewer</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #172d3a;
+      background: #f2f5f4;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; min-width: 320px; }
+
+    .topbar {
+      height: 66px;
+      display: flex;
+      align-items: center;
+      padding: 0 max(28px, calc((100% - 1120px) / 2));
+      background: #123242;
+      color: #f5faf8;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      margin-right: 12px;
+      place-items: center;
+      border: 1px solid #68c7a6;
+      border-radius: 7px;
+      color: #8de0c0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .brand-name { font-size: 14px; font-weight: 650; letter-spacing: .02em; }
+
+    main { width: min(1120px, calc(100% - 48px)); margin: 46px auto 72px; }
+
+    .eyebrow {
+      margin: 0 0 9px;
+      color: #258568;
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    h1 { margin: 0; color: #142f3e; font-size: clamp(29px, 4vw, 38px); letter-spacing: -.035em; }
+
+    .intro { margin: 10px 0 28px; color: #62727a; font-size: 15px; line-height: 1.6; }
+
+    .upload {
+      display: flex;
+      min-height: 118px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 28px;
+      border: 1px solid #d5e0dc;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 2px 6px #18352d0a;
+    }
+
+    .upload-copy { display: flex; align-items: center; gap: 16px; }
+
+    .file-icon {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 9px;
+      background: #e7f4ee;
+      color: #238263;
+      font-size: 20px;
+    }
+
+    .upload-title { margin: 0 0 5px; font-size: 15px; font-weight: 650; }
+    .upload-hint { margin: 0; color: #718087; font-size: 13px; }
+
+    .button {
+      min-height: 42px;
+      padding: 0 17px;
+      border: 0;
+      border-radius: 6px;
+      background: #208260;
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .button:hover { background: #176e50; }
+    .button:focus-visible, .upload:focus-within { outline: 3px solid #90d9bd; outline-offset: 3px; }
+    .file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
+
+    .upload.dragging { border-color: #208260; background: #f3fbf7; }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 15px;
+      border: 1px solid #efc8bf;
+      border-radius: 7px;
+      background: #fff5f2;
+      color: #8d3926;
+      font-size: 13px;
+    }
+
+    .message.visible { display: block; }
+
+    .results { margin-top: 34px; }
+
+    .results-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 15px;
+    }
+
+    h2 { margin: 0; font-size: 19px; letter-spacing: -.015em; }
+
+    .source { margin: 6px 0 0; color: #74828a; font-size: 12px; }
+
+    .count {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border: 1px solid #d5e6de;
+      border-radius: 20px;
+      background: #edf7f2;
+      color: #28775e;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid #dce4e1;
+      border-radius: 9px;
+      background: #fff;
+      box-shadow: 0 2px 6px #18352d08;
+    }
+
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    thead { background: #f7f9f8; }
+    th { padding: 13px 17px; color: #697981; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    td { padding: 14px 17px; border-top: 1px solid #edf0ef; color: #31454f; font-size: 13px; }
+    th:not(:last-child), td:not(:last-child) { white-space: nowrap; }
+    td.assembly { min-width: 250px; color: #718087; overflow-wrap: anywhere; white-space: normal; }
+    td.name { min-width: 220px; color: #1d3d4c; font-weight: 550; overflow-wrap: anywhere; white-space: normal; }
+    tbody tr:hover { background: #f8fbf9; }
+
+    .empty {
+      padding: 44px 20px;
+      color: #7a898f;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .empty strong { display: block; margin-bottom: 7px; color: #344a54; font-size: 14px; }
+
+    @media (max-width: 640px) {
+      .topbar { padding: 0 20px; }
+      main { width: calc(100% - 32px); margin-top: 32px; }
+      .upload { align-items: flex-start; flex-direction: column; padding: 20px; }
+      .upload .button { width: 100%; }
+      .results-heading { align-items: flex-start; flex-direction: column; }
+      td.assembly { min-width: 190px; }
+      td.name { min-width: 170px; }
+      th, td { padding-right: 12px; padding-left: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand-mark" aria-hidden="true">P</span>
+    <span class="brand-name">Aluminium Price Calculator</span>
+  </header>
+
+  <main>
+    <p class="eyebrow">Parts list</p>
+    <h1>Plate parts</h1>
+    <p class="intro">Open a dimensions report to see only the components with “ plate” in their name.</p>
+
+    <section class="upload" id="drop-zone" aria-label="Open a parts list">
+      <div class="upload-copy">
+        <span class="file-icon" aria-hidden="true">↥</span>
+        <div>
+          <p class="upload-title">Choose a parts list</p>
+          <p class="upload-hint">Open a .txt file or drag it here. Your file stays on this device.</p>
+        </div>
+      </div>
+      <label class="button" for="file-input">Choose .txt file</label>
+      <input class="file-input" id="file-input" type="file" accept=".txt,text/plain">
+    </section>
+
+    <div class="message" id="error-message" role="alert"></div>
+
+    <section class="results" aria-labelledby="results-title">
+      <div class="results-heading">
+        <div>
+          <h2 id="results-title">Matching components</h2>
+          <p class="source" id="source-name">No file loaded</p>
+        </div>
+        <span class="count" id="result-count" aria-live="polite">0 parts</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Assembly</th>
+              <th scope="col">Component name</th>
+              <th scope="col">Length (mm)</th>
+              <th scope="col">Width (mm)</th>
+              <th scope="col">Height (mm)</th>
+            </tr>
+          </thead>
+          <tbody id="results-body">
+            <tr><td class="empty" colspan="5"><strong>Ready when you are</strong>Choose a text file to list its plate components.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const fileInput = document.getElementById("file-input");
+    const dropZone = document.getElementById("drop-zone");
+    const resultsBody = document.getElementById("results-body");
+    const sourceName = document.getElementById("source-name");
+    const resultCount = document.getElementById("result-count");
+    const errorMessage = document.getElementById("error-message");
+
+    function parseParts(text) {
+      const parts = [];
+      let dimensions = null;
+      let foundDimensionRow = false;
+      const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/);
+      const dimensionRow = /^\s*(\d+)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\s{2,}(.+?)\s*$/;
+
+      for (const line of lines) {
+        const row = line.match(dimensionRow);
+        if (row) {
+          foundDimensionRow = true;
+          dimensions = { length: row[2], width: row[3], height: row[4] };
+          addIfPlate(row[5], dimensions);
+          continue;
+        }
+
+        const name = line.trim();
+        if (!dimensions || !name || /^[-=]+$/.test(name)) continue;
+        addIfPlate(name, dimensions);
+      }
+
+      function addIfPlate(name, size) {
+        if (name.toLocaleLowerCase().includes(" plate")) {
+          const separator = name.lastIndexOf("/");
+          parts.push({
+            assembly: separator < 0 ? "" : name.slice(0, separator),
+            name: separator < 0 ? name : name.slice(separator + 1),
+            ...size
+          });
+        }
+      }
+
+      if (!foundDimensionRow) {
+        throw new Error("No dimension rows were found. Please choose a parts report with count, length, width, height, and component names.");
+      }
+      return parts;
+    }
+
+    function renderParts(parts) {
+      resultsBody.replaceChildren();
+      if (parts.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.className = "empty";
+        cell.colSpan = 5;
+        const title = document.createElement("strong");
+        title.textContent = "No plate parts found";
+        cell.append(title, document.createTextNode('No component names in this file contain " plate".'));
+        row.append(cell);
+        resultsBody.append(row);
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      for (const part of parts) {
+        const row = document.createElement("tr");
+        for (const value of [part.assembly, part.name, part.length, part.width, part.height]) {
+          const cell = document.createElement("td");
+          if (value === part.assembly) cell.className = "assembly";
+          if (value === part.name) cell.className = "name";
+          cell.textContent = value;
+          row.append(cell);
+        }
+        fragment.append(row);
+      }
+      resultsBody.append(fragment);
+    }
+
+    async function loadFile(file) {
+      if (!file) return;
+      errorMessage.classList.remove("visible");
+      try {
+        const text = await file.text();
+        const parts = parseParts(text);
+        renderParts(parts);
+        sourceName.textContent = file.name;
+        resultCount.textContent = `${parts.length} ${parts.length === 1 ? "part" : "parts"}`;
+      } catch (error) {
+        errorMessage.textContent = error.message;
+        errorMessage.classList.add("visible");
+      }
+    }
+
+    fileInput.addEventListener("change", () => loadFile(fileInput.files[0]));
+    dropZone.addEventListener("dragover", event => {
+      event.preventDefault();
+      dropZone.classList.add("dragging");
+    });
+    dropZone.addEventListener("dragleave", event => {
+      if (!dropZone.contains(event.relatedTarget)) dropZone.classList.remove("dragging");
+    });
+    dropZone.addEventListener("drop", event => {
+      event.preventDefault();
+      dropZone.classList.remove("dragging");
+      loadFile(event.dataTransfer.files[0]);
+    });
+  </script>
+</body>
+</html>
